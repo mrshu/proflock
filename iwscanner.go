@@ -63,6 +63,13 @@ type AP struct {
         essid string
 }
 
-func GetAPs () (aps []AP, err error) {
+type APs []AP
+
+func GetAPs () (aps APs , err error) {
+        return
+}
+
+func parseIwlistOutput(in string) (aps APs) {
+        //splits := strings.Split(in, "Cell")
         return
 }
