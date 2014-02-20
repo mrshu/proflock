@@ -9,7 +9,7 @@ import (
 
 func IsWifiOn() (ret bool, err error) {
         var out bytes.Buffer
-        testcmd := exec.Command("iwconfig", "wlan0")
+        testcmd := exec.Command("ifconfig", "wlan0")
         testcmd.Stdout = &out
         if e := testcmd.Run(); e != nil {
                 err = fmt.Errorf("Error with run: %v", e)
@@ -36,7 +36,7 @@ func TurnWifi(in string) error {
                 t = "down"
         }
 
-        cmd := exec.Command("iwconfig", "wlan0", t)
+        cmd := exec.Command("ifconfig", "wlan0", t)
         if err := cmd.Run(); err != nil {
                 return fmt.Errorf("Error with run: %v", err)
         } else {
