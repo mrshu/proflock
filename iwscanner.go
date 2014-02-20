@@ -5,6 +5,8 @@ import (
         "strings"
         "fmt"
         "bytes"
+        "strconv"
+        "regexp"
 )
 
 func IsWifiOn() (ret bool, err error) {
@@ -70,6 +72,20 @@ func GetAPs () (aps APs , err error) {
 }
 
 func parseIwlistOutput(in string) (aps APs) {
-        //splits := strings.Split(in, "Cell")
+        splits := strings.Split(in, "Cell")
+        address_regex, _ := regexp.Compile("Address: [0-9A-Z:]+")
+        quality_regex, _ := regexp.Compile("Quality=[0-9]+")
+        essid_regex, _ := regexp.Compile("ESSID:\".*\"")
+        for _, split := range splits {
+                ap := AP{}
+                ap.address = address_regex.FindString(split)
+
+                i, _ := strconv.Atoi(quality_regex.FindString(split))
+                ap.quality = i
+
+                ap.essid = essid_regex.FindString(split)
+
+                aps = append(aps, ap)
+        }
         return
 }
