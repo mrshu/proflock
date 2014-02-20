@@ -5,12 +5,12 @@ import (
         "strings"
 )
 
-func IsWifiOn() bool {
+func IsWifiOn() bool, error {
         var out bytes.Buffer
         testcmd := exec.Command("iwconfig", "wlan0")
         testcmd.Stdout = &out
         if (e := testcmd.Run(), e != nil) {
-                return false
+                return fmt.Errorf("Error with run: %v", err)
         }
 
         contains_up := strings.Contains(out.String(), "UP")
@@ -23,7 +23,7 @@ func IsWifiOn() bool {
 }
 
 // in can have strings "on" or "off"
-func TurnWifi(in string) bool {
+func TurnWifi(in string) error {
         var t string
 
         if in == "on" {
@@ -34,15 +34,21 @@ func TurnWifi(in string) bool {
 
         cmd := exec.Command("iwconfig", "wlan0", t)
         if err := cmd.Run(), err != nil {
-                return false
+                return fmt.Errorf("Error with run: %v", err)
         } else {
-                if in == "on" && IsWifiOn() {
-                        return true
-                }
-                if in == "off" && !IsWifiOn() {
-                        return true
+
+                wifi_on, e := IsWifiOn()
+                if e != nil {
+                        return fmt.Errorf("Error with IsWifiOn: %v", e)
                 }
 
-                return false
+                if in == "on" && wifi_on {
+                        return true
+                }
+                if in == "off" && !wifi_on {
+                        return true
+                }
+                return fmt.Errorf("Error: something is wrong. This should not happen.")
+
         }
 }
