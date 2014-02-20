@@ -56,3 +56,13 @@ func TurnWifi(in string) error {
 
         }
 }
+
+type AP struct {
+        address string
+        quality int
+        essid string
+}
+
+func GetAPs () (aps []AP, err error) {
+        return
+}
