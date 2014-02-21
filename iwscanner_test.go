@@ -6,10 +6,10 @@ import (
 )
 
 func TestTurnWifi (t *testing.T) {
-        e := TurnWifi("on")
+        e := TurnWifi("wlan0", "on")
         assert.Equal(t, e, nil)
 
-        ret, err := IsWifiOn()
+        ret, err := IsWifiOn("wlan0")
         assert.Equal(t, ret, true)
         assert.Equal(t, err, nil)
 }
