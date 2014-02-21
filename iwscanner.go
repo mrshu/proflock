@@ -9,9 +9,9 @@ import (
         "regexp"
 )
 
-func IsWifiOn() (ret bool, err error) {
+func IsWifiOn(device string) (ret bool, err error) {
         var out bytes.Buffer
-        testcmd := exec.Command("ifconfig", "wlan0")
+        testcmd := exec.Command("ifconfig", device)
         testcmd.Stdout = &out
         if e := testcmd.Run(); e != nil {
                 err = fmt.Errorf("Error with run: %v", e)
@@ -29,7 +29,7 @@ func IsWifiOn() (ret bool, err error) {
 }
 
 // in can have strings "on" or "off"
-func TurnWifi(in string) error {
+func TurnWifi(device string, in string) error {
         var t string
 
         if in == "on" {
@@ -38,12 +38,12 @@ func TurnWifi(in string) error {
                 t = "down"
         }
 
-        cmd := exec.Command("ifconfig", "wlan0", t)
+        cmd := exec.Command("ifconfig", device, t)
         if err := cmd.Run(); err != nil {
                 return fmt.Errorf("Error with run: %v", err)
         } else {
 
-                wifi_on, e := IsWifiOn()
+                wifi_on, e := IsWifiOn(device)
                 if e != nil {
                         return fmt.Errorf("Error with IsWifiOn: %v", e)
                 }
