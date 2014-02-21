@@ -19,7 +19,7 @@ func TestParseIwlist(t *testing.T) {
           Cell 01 - Address: 94:44:52:CC:5A:F0
                     Channel:1
                     Frequency:2.412 GHz (Channel 1)
-                    Quality=42/70  Signal level=-68 dBm  
+                    Quality=42/70  Signal level=-68 dBm
                     Encryption key:on
                     ESSID:"ivana"
                     Bit Rates:1 Mb/s; 2 Mb/s; 5.5 Mb/s; 11 Mb/s; 9 Mb/s
@@ -31,7 +31,7 @@ func TestParseIwlist(t *testing.T) {
           Cell 02 - Address: 34:08:04:BF:BF:7A
                     Channel:1
                     Frequency:2.412 GHz (Channel 1)
-                    Quality=33/70  Signal level=-77 dBm  
+                    Quality=33/70  Signal level=-77 dBm
                     Encryption key:on
                     ESSID:"Sanyo"
                     Bit Rates:1 Mb/s; 2 Mb/s; 5.5 Mb/s; 11 Mb/s; 9 Mb/s
