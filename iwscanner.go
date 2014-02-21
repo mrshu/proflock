@@ -67,8 +67,20 @@ type AP struct {
 
 type APs []AP
 
-func GetAPs () (aps APs , err error) {
-        return
+func GetAPs (device string) (aps APs , err error) {
+        var out bytes.Buffer
+        cmd := exec.Command("iwlist", device, "scan")
+        cmd.Stdout = &out
+
+        if e := cmd.Run(); e != nil {
+                err = fmt.Errorf("Error with run: %v", e)
+                return
+        } else {
+                list := parseIwlistOutput(out.String())
+                aps = list
+                err = nil
+                return
+        }
 }
 
 func parseIwlistOutput(in string) (aps APs) {
