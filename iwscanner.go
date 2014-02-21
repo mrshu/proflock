@@ -73,17 +73,26 @@ func GetAPs () (aps APs , err error) {
 
 func parseIwlistOutput(in string) (aps APs) {
         splits := strings.Split(in, "Cell")
-        address_regex, _ := regexp.Compile("Address: [0-9A-Z:]+")
-        quality_regex, _ := regexp.Compile("Quality=[0-9]+")
-        essid_regex, _ := regexp.Compile("ESSID:\".*\"")
-        for _, split := range splits {
-                ap := AP{}
-                ap.address = address_regex.FindString(split)
+        address_regex, _ := regexp.Compile("Address: ([0-9A-Z:]*)")
+        quality_regex, _ := regexp.Compile("Quality=([0-9]+)")
+        essid_regex, _ := regexp.Compile("ESSID:\"(.*)\"")
 
-                i, _ := strconv.Atoi(quality_regex.FindString(split))
+        first := true
+        for _, split := range splits {
+                if first {
+                        first = false
+                        continue
+                }
+
+                ap := AP{}
+                address_match := address_regex.FindStringSubmatch(split)
+                ap.address = address_match[1]
+
+                quality_match := quality_regex.FindStringSubmatch(split)
+                i, _ := strconv.Atoi(quality_match[1])
                 ap.quality = i
 
-                ap.essid = essid_regex.FindString(split)
+                ap.essid = essid_regex.FindStringSubmatch(split)[1]
 
                 aps = append(aps, ap)
         }
