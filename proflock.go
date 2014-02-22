@@ -3,6 +3,7 @@ package main
 import(
     "github.com/spf13/cobra"
     "fmt"
+    "./iwscanner"
 )
 
 func main() {
@@ -12,7 +13,19 @@ func main() {
         Short: "Scan current location for APs",
         Long:  `Turns on WiFi and scans for AP around.`,
         Run: func(cmd *cobra.Command, args []string) {
+                fmt.Println("Turning wifi on")
+
+                if e := iwscanner.TurnWifi("wlan0", "on"); e != nil {
+                        panic(e)
+                }
+
                 fmt.Println("Scanning")
+                aps, err := iwscanner.GetAPs("wlan0")
+                if err != nil {
+                        panic(err);
+                } else {
+                        fmt.Println(aps)
+                }
         },
     }
 
