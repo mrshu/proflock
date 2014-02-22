@@ -37,8 +37,21 @@ func main() {
                 fmt.Println("Managing")
         },
     }
+
+    var cmdTurnWifi = &cobra.Command{
+        Use:   "turn-wifi [on|off]",
+        Short: "Turns Wifi On or Off",
+        Long:  `Turns Wifi On or Off.`,
+        Run: func(cmd *cobra.Command, args []string) {
+                if len(args) == 0 {
+                        iwscanner.TurnWifi("wlan0", "on")
+                } else {
+                        iwscanner.TurnWifi("wlan0", args[0])
+                }
+        },
+    }
     var rootCmd = &cobra.Command{Use: "proflock"}
-    rootCmd.AddCommand(cmdScan, cmdProfile)
+    rootCmd.AddCommand(cmdScan, cmdProfile, cmdTurnWifi)
     rootCmd.Execute()
 }
 
