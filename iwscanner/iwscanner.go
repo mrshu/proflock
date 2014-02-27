@@ -110,3 +110,32 @@ func parseIwlistOutput(in string) (aps APs) {
         }
         return
 }
+
+func parseIwOutput(in string) (aps APs) {
+        splits := strings.Split(in, "BSS")
+        address_regex, _ := regexp.Compile(" ([0-9A-Z:]*)\\(on (.*)\\)")
+        quality_regex, _ := regexp.Compile("signal: -([0-9]+)\\. dBm")
+        essid_regex, _ := regexp.Compile("SSID: (.*)")
+
+        first := true
+        for _, split := range splits {
+                if first {
+                        first = false
+                        continue
+                }
+
+                ap := AP{}
+                address_match := address_regex.FindStringSubmatch(split)
+                ap.address = address_match[1]
+
+                quality_match := quality_regex.FindStringSubmatch(split)
+                i, _ := strconv.Atoi(quality_match[1])
+                ap.quality = 100 - i
+
+                ap.essid = essid_regex.FindStringSubmatch(split)[1]
+
+                aps = append(aps, ap)
+        }
+        return
+        return
+}
