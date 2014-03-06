@@ -137,5 +137,4 @@ func parseIwOutput(in string) (aps APs) {
                 aps = append(aps, ap)
         }
         return
-        return
 }
