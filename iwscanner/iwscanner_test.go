@@ -13,7 +13,7 @@ func TestTurnWifi (t *testing.T) {
         assert.Equal(t, ret, true)
         assert.Equal(t, err, nil)
 
-        ret, err := IsWifiOnIp("wlp2s0")
+        ret, err = IsWifiOnIp("wlp2s0")
         assert.Equal(t, ret, true)
         assert.Equal(t, err, nil)
 

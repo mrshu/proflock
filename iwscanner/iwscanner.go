@@ -52,6 +52,13 @@ func IsWifiOnIp(device string) (ret bool, err error) {
 func TurnWifi(device string, in string) error {
         var t string
 
+        on, e := IsWifiOn(device)
+        if (on && in == "on" && e == nil) {
+                return nil
+        } else if (!on && e == nil) {
+                return nil
+        }
+
         if in == "on" {
                 t = "up"
         } else {
