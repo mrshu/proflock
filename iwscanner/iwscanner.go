@@ -28,6 +28,26 @@ func IsWifiOn(device string) (ret bool, err error) {
         return
 }
 
+func IsWifiOnIp(device string) (ret bool, err error) {
+        var out bytes.Buffer
+        testcmd := exec.Command("ip", "link", "show", device)
+        testcmd.Stdout = &out
+        if e := testcmd.Run(); e != nil {
+                err = fmt.Errorf("Error with run: %v", e)
+                return
+        }
+
+        contains_up := strings.Contains(out.String(), "UP")
+
+        if (contains_up) {
+                ret = true
+        } else {
+                ret = false
+        }
+        return
+
+}
+
 // in can have strings "on" or "off"
 func TurnWifi(device string, in string) error {
         var t string

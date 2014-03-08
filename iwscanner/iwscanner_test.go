@@ -12,6 +12,11 @@ func TestTurnWifi (t *testing.T) {
         ret, err := IsWifiOn("wlp2s0")
         assert.Equal(t, ret, true)
         assert.Equal(t, err, nil)
+
+        ret, err := IsWifiOnIp("wlp2s0")
+        assert.Equal(t, ret, true)
+        assert.Equal(t, err, nil)
+
 }
 
 func TestParseIwlist(t *testing.T) {
