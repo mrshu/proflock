@@ -3,6 +3,7 @@ package main
 import(
         "github.com/spf13/cobra"
         "fmt"
+        "./profile"
         "./iwscanner"
 )
 
@@ -30,15 +31,6 @@ func main() {
                 },
         }
 
-        var cmdProfile = &cobra.Command{
-                Use:   "profile [name of the profile]",
-                Short: "Manage profile",
-                Long:  `Create, update, delete or differently manage the given profile.`,
-                Run: func(cmd *cobra.Command, args []string) {
-                        fmt.Println("Managing")
-                },
-        }
-
         var cmdTurnWifi = &cobra.Command{
                 Use:   "turn-wifi [on|off]",
                 Short: "Turns Wifi On or Off",
@@ -54,7 +46,7 @@ func main() {
         var rootCmd = &cobra.Command{Use: "proflock"}
         rootCmd.PersistentFlags().StringVarP(&wifi_device, "device", "", "wlp2s0",
                                                 "Use this wifi-enabled device.")
-        rootCmd.AddCommand(cmdScan, cmdProfile, cmdTurnWifi)
+        rootCmd.AddCommand(cmdScan, profile.CmdProfile, cmdTurnWifi)
         rootCmd.Execute()
 }
 
