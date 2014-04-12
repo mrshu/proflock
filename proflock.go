@@ -5,9 +5,13 @@ import(
         "fmt"
         "./profile"
         "./iwscanner"
+        "github.com/rakyll/globalconf"
 )
 
+
 func main() {
+
+        globalconf.New("proflock")
 
         var wifi_device string
         var cmdScan = &cobra.Command{
