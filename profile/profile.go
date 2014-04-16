@@ -23,6 +23,17 @@ var cmdShow = &cobra.Command{
                 },
         }
 
+var cmdCreate = &cobra.Command{
+                Use:   "create",
+                Short: "Create profiles",
+                Long:  `create profiles.`,
+                Run: func(cmd *cobra.Command, args []string) {
+                        fmt.Println("creating profiles")
+                },
+        }
+
+
 func init () {
         CmdProfile.AddCommand(cmdShow)
+        CmdProfile.AddCommand(cmdCreate)
 }
