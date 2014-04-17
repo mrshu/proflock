@@ -8,12 +8,12 @@ import(
         "github.com/rakyll/globalconf"
 )
 
+var wifi_device string
 
 func main() {
 
         globalconf.New("proflock")
 
-        var wifi_device string
         var cmdScan = &cobra.Command{
                 Use:   "scan",
                 Short: "Scan current location for APs",

@@ -3,7 +3,10 @@ package profile
 import (
         "github.com/spf13/cobra"
         "fmt"
+        "../iwscanner"
 )
+
+var wifi_device string
 
 var CmdProfile = &cobra.Command{
                 Use:   "profile [name of the profile]",
@@ -33,6 +36,13 @@ var cmdCreate = &cobra.Command{
                         }
 
                         fmt.Printf("Creating a profile %v\n", args[0])
+                        aps, err := iwscanner.GetAPs(wifi_device)
+                        if err != nil {
+                                panic(err);
+                        } else {
+                                fmt.Printf("I have these APIs %v\n", aps)
+                        }
+
                 },
         }
 
@@ -40,4 +50,6 @@ var cmdCreate = &cobra.Command{
 func init () {
         CmdProfile.AddCommand(cmdShow)
         CmdProfile.AddCommand(cmdCreate)
+        CmdProfile.PersistentFlags().StringVarP(&wifi_device, "device", "", "wlp2s0",
+                                                "Use this wifi-enabled device.")
 }
