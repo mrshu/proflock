@@ -28,7 +28,11 @@ var cmdCreate = &cobra.Command{
                 Short: "Create profiles",
                 Long:  `create profiles.`,
                 Run: func(cmd *cobra.Command, args []string) {
-                        fmt.Println("creating profiles")
+                        if len(args) < 1 {
+                                fmt.Println("Please specify a profile name")
+                        }
+
+                        fmt.Printf("Creating a profile %v\n", args[0])
                 },
         }
 
