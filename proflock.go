@@ -41,9 +41,13 @@ func main() {
                 Long:  `Turns Wifi On or Off.`,
                 Run: func(cmd *cobra.Command, args []string) {
                         if len(args) == 0 {
-                                iwscanner.TurnWifi(wifi_device, "on")
+                                if e := iwscanner.TurnWifi(wifi_device, "on"); e != nil {
+                                        panic(e)
+                                }
                         } else {
-                                iwscanner.TurnWifi(wifi_device, args[0])
+                                if e := iwscanner.TurnWifi(wifi_device, args[0]); e != nil {
+                                        panic(e)
+                                }
                         }
                 },
         }
