@@ -55,7 +55,7 @@ func TurnWifi(device string, in string) error {
         on, e := IsWifiOn(device)
         if (on && in == "on" && e == nil) {
                 return nil
-        } else if (!on && e == nil) {
+        } else if (!on && in != "on" && e == nil) {
                 return nil
         }
 

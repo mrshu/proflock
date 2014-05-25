@@ -12,7 +12,10 @@ var wifi_device string
 
 func main() {
 
-        globalconf.New("proflock")
+        conf, err := globalconf.New("proflock")
+        if err != nil {
+                panic(err)
+        }
 
         var cmdScan = &cobra.Command{
                 Use:   "scan",
