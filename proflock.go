@@ -3,12 +3,14 @@ package main
 import(
         "github.com/spf13/cobra"
         "fmt"
+        "path"
         "./profile"
         "./iwscanner"
         "github.com/rakyll/globalconf"
 )
 
 var wifi_device string
+var profiles_dir string
 
 func main() {
 
@@ -16,6 +18,8 @@ func main() {
         if err != nil {
                 panic(err)
         }
+
+        profiles_dir = path.Dir(conf.Filename)
 
         var cmdScan = &cobra.Command{
                 Use:   "scan",
@@ -57,6 +61,9 @@ func main() {
         var rootCmd = &cobra.Command{Use: "proflock"}
         rootCmd.PersistentFlags().StringVarP(&wifi_device, "device", "", "wlp2s0",
                                                 "Use this wifi-enabled device.")
+
+        profile.ProfilesDir = profiles_dir
+
         rootCmd.AddCommand(cmdScan, profile.CmdProfile, cmdTurnWifi)
         rootCmd.Execute()
 }

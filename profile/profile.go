@@ -7,11 +7,12 @@ import (
 )
 
 var wifi_device string
+var ProfilesDir string
 
 var CmdProfile = &cobra.Command{
                 Use:   "profile [name of the profile]",
                 Short: "Manage profile",
-                Long:  `Create, update, delete or differently manage the given profile.`,
+                Long:  `Create, update, delete or in some other way manage the given profile.`,
                 Run: func(cmd *cobra.Command, args []string) {
                         fmt.Println("Managing")
                 },
@@ -22,7 +23,7 @@ var cmdShow = &cobra.Command{
                 Short: "Show profiles",
                 Long:  `show profiles.`,
                 Run: func(cmd *cobra.Command, args []string) {
-                        fmt.Println("showing profiles")
+                        fmt.Printf("Showing profiles in %s\n", ProfilesDir)
                 },
         }
 
