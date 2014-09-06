@@ -19,7 +19,7 @@ func main() {
                 panic(err)
         }
 
-        profiles_dir = path.Dir(conf.Filename)
+        profiles_dir = path.Dir(conf.Filename) + "/profiles"
 
         var cmdScan = &cobra.Command{
                 Use:   "scan",
