@@ -58,6 +58,7 @@ func main() {
                         }
                 },
         }
+
         var rootCmd = &cobra.Command{Use: "proflock"}
         rootCmd.PersistentFlags().StringVarP(&wifi_device, "device", "", "wlp2s0",
                                                 "Use this wifi-enabled device.")

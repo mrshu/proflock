@@ -14,7 +14,7 @@ var CmdProfile = &cobra.Command{
                 Short: "Manage profile",
                 Long:  `Create, update, delete or in some other way manage the given profile.`,
                 Run: func(cmd *cobra.Command, args []string) {
-                        fmt.Println("Managing")
+                        fmt.Printf("Showing profiles in %s\n", ProfilesDir)
                 },
         }
 
@@ -23,7 +23,10 @@ var cmdShow = &cobra.Command{
                 Short: "Show profiles",
                 Long:  `show profiles.`,
                 Run: func(cmd *cobra.Command, args []string) {
-                        fmt.Printf("Showing profiles in %s\n", ProfilesDir)
+                        if len(args) < 1 {
+                                fmt.Println("Please specify a profile name")
+                                return
+                        }
                 },
         }
 
