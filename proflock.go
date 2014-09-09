@@ -59,13 +59,23 @@ func main() {
                 },
         }
 
+        var cmdProfiles = &cobra.Command{
+                Use:   "profiles",
+                Short: "Show profiles",
+                Long:  `show profiles.`,
+                Run: func(cmd *cobra.Command, args []string) {
+                        return
+                },
+        }
+
+
         var rootCmd = &cobra.Command{Use: "proflock"}
         rootCmd.PersistentFlags().StringVarP(&wifi_device, "device", "", "wlp2s0",
                                                 "Use this wifi-enabled device.")
 
         profile.ProfilesDir = profiles_dir
 
-        rootCmd.AddCommand(cmdScan, profile.CmdProfile, cmdTurnWifi)
+        rootCmd.AddCommand(cmdScan, profile.CmdProfile, cmdTurnWifi, cmdProfiles)
         rootCmd.Execute()
 }
 
