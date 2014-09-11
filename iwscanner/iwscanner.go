@@ -87,9 +87,9 @@ func TurnWifi(device string, in string) error {
 }
 
 type AP struct {
-        address string
-        quality int
-        essid string
+        Address string
+        Quality int
+        Essid string
 }
 
 type APs []AP
@@ -125,13 +125,13 @@ func parseIwlistOutput(in string) (aps APs) {
 
                 ap := AP{}
                 address_match := address_regex.FindStringSubmatch(split)
-                ap.address = address_match[1]
+                ap.Address = address_match[1]
 
                 quality_match := quality_regex.FindStringSubmatch(split)
                 i, _ := strconv.Atoi(quality_match[1])
-                ap.quality = i
+                ap.Quality = i
 
-                ap.essid = essid_regex.FindStringSubmatch(split)[1]
+                ap.Essid = essid_regex.FindStringSubmatch(split)[1]
 
                 aps = append(aps, ap)
         }
@@ -153,13 +153,13 @@ func parseIwOutput(in string) (aps APs) {
 
                 ap := AP{}
                 address_match := address_regex.FindStringSubmatch(split)
-                ap.address = address_match[1]
+                ap.Address = address_match[1]
 
                 quality_match := quality_regex.FindStringSubmatch(split)
                 i, _ := strconv.Atoi(quality_match[1])
-                ap.quality = 100 - i
+                ap.Quality = 100 - i
 
-                ap.essid = essid_regex.FindStringSubmatch(split)[1]
+                ap.Essid = essid_regex.FindStringSubmatch(split)[1]
 
                 aps = append(aps, ap)
         }

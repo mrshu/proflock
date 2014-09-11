@@ -87,7 +87,7 @@ func main() {
         }
 
         var rootCmd = &cobra.Command{Use: "proflock"}
-        rootCmd.PersistentFlags().StringVarP(&wifi_device, "device", "", "wlp2s0",
+        rootCmd.PersistentFlags().StringVarP(&wifi_device, "device", "", "wlp4s0",
                                                 "Use this wifi-enabled device.")
 
         profile.ProfilesDir = profiles_dir

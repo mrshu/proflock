@@ -32,14 +32,16 @@ func RecordLocation(location string, profile_dir string, device string) (error) 
                 return err
         }
 
-        f, err := os.OpenFile(profile_dir + "/" + location + "/data", os.O_APPEND|os.O_WRONLY, 0644)
+        path := profile_dir + "/" + location + "/data"
+
+        f, err := os.OpenFile(path, os.O_APPEND|os.O_WRONLY, 0644)
         if err != nil {
-                return err
+                f, err = os.Create(path)
         }
 
         defer f.Close()
 
-        if _, err = f.WriteString(string(out)); err != nil {
+        if _, err = f.WriteString(string(out) + "\n"); err != nil {
                 return err
         }
 
