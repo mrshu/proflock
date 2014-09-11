@@ -7,6 +7,7 @@ import(
         "./profile"
         "./iwscanner"
         "github.com/rakyll/globalconf"
+        "./proflocker"
 )
 
 var wifi_device string
@@ -62,12 +63,28 @@ func main() {
         var cmdProfiles = &cobra.Command{
                 Use:   "profiles",
                 Short: "Show profiles",
-                Long:  `show profiles.`,
+                Long:  `Show profiles.`,
                 Run: func(cmd *cobra.Command, args []string) {
                         return
                 },
         }
 
+        var cmdRecord = &cobra.Command{
+                Use:   "record [location]",
+                Short: "Record location to use it as a profile afterwards.",
+                Long:  `Record location to use it as a profile afterwards.`,
+                Run: func(cmd *cobra.Command, args []string) {
+                        if len(args) < 1 {
+                                fmt.Println("Location name is required.")
+                                return
+                        }
+
+                        err := proflocker.RecordLocation(args[0], profiles_dir, wifi_device)
+                        if err != nil {
+                                panic(err)
+                        }
+                },
+        }
 
         var rootCmd = &cobra.Command{Use: "proflock"}
         rootCmd.PersistentFlags().StringVarP(&wifi_device, "device", "", "wlp2s0",
@@ -75,7 +92,7 @@ func main() {
 
         profile.ProfilesDir = profiles_dir
 
-        rootCmd.AddCommand(cmdScan, profile.CmdProfile, cmdTurnWifi, cmdProfiles)
+        rootCmd.AddCommand(cmdScan, profile.CmdProfile, cmdTurnWifi, cmdProfiles, cmdRecord)
         rootCmd.Execute()
 }
 
