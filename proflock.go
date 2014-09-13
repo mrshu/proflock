@@ -4,6 +4,7 @@ import(
         "github.com/spf13/cobra"
         "fmt"
         "path"
+        "path/filepath"
         "./profile"
         "./iwscanner"
         "github.com/rakyll/globalconf"
@@ -86,13 +87,32 @@ func main() {
                 },
         }
 
+        var cmdShow = &cobra.Command{
+                Use:   "show [location]",
+                Short: "Shows location's data.",
+                Long:  `Shows location's data.`,
+                Run: func(cmd *cobra.Command, args []string) {
+                        if len(args) < 1 {
+                                fmt.Println("Location name is required.")
+                                return
+                        }
+
+                        location, err := proflocker.ParseLocation(args[0], filepath.Base(args[0]))
+                        if err != nil {
+                                panic(err)
+                        }
+
+                        fmt.Println(location)
+                },
+        }
+
         var rootCmd = &cobra.Command{Use: "proflock"}
         rootCmd.PersistentFlags().StringVarP(&wifi_device, "device", "", "wlp4s0",
                                                 "Use this wifi-enabled device.")
 
         profile.ProfilesDir = profiles_dir
 
-        rootCmd.AddCommand(cmdScan, profile.CmdProfile, cmdTurnWifi, cmdProfiles, cmdRecord)
+        rootCmd.AddCommand(cmdScan, profile.CmdProfile, cmdTurnWifi, cmdProfiles, cmdRecord, cmdShow)
         rootCmd.Execute()
 }
 
