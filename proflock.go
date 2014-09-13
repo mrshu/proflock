@@ -4,7 +4,6 @@ import(
         "github.com/spf13/cobra"
         "fmt"
         "path"
-        "path/filepath"
         "./profile"
         "./iwscanner"
         "github.com/rakyll/globalconf"
@@ -97,7 +96,9 @@ func main() {
                                 return
                         }
 
-                        location, err := proflocker.ParseLocation(args[0], filepath.Base(args[0]))
+                        name := args[0]
+
+                        location, err := proflocker.ParseLocation(profiles_dir + "/" + name + "/data", name)
                         if err != nil {
                                 panic(err)
                         }

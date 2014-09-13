@@ -75,7 +75,6 @@ func ParseLocation(path string, name string) (Location, error) {
 
                         scores[ap.Essid] = score
                 }
-
         }
 
         for _, value := range scores {
