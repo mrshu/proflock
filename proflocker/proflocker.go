@@ -78,6 +78,10 @@ func ParseLocation(path string, name string) (Location, error) {
         }
 
         for _, value := range scores {
+                // making sure the resulting score is the weighted average
+                value.score = value.score/(value.score_total/70)
+                value.score_total = value.score_total/(value.score_total/70)
+
                 location.aps = append(location.aps, value)
         }
 
