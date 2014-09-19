@@ -9,16 +9,17 @@ import (
 )
 
 type APscore struct {
-        essid string
-        address string
-        score float64
-        score_total float64
+        Essid string
+        Address string
+        Score float64
+        Score_total float64
 }
 
 type Location struct {
         Name string
         Path string
         Aps []APscore
+        Aps_score float64
 }
 
 type Locations []Location
@@ -67,22 +68,23 @@ func ParseLocation(path string, name string) (Location, error) {
 
                 for _, ap := range *tmp {
                         score := APscore{
-                                essid: ap.Essid,
-                                address: ap.Address,
-                                score: scores[ap.Essid].score + float64(ap.Quality),
-                                score_total: scores[ap.Essid].score_total + 70,
+                                Essid: ap.Essid,
+                                Address: ap.Address,
+                                Score: scores[ap.Essid].Score + float64(ap.Quality),
+                                Score_total: scores[ap.Essid].Score_total + 70,
                         }
 
-                        scores[ap.Essid] = score
+                        scores[ap.Address] = score
                 }
         }
 
         for _, value := range scores {
                 // making sure the resulting score is the weighted average
-                value.score = value.score/(value.score_total/70)
-                value.score_total = value.score_total/(value.score_total/70)
+                value.Score = value.Score/(value.Score_total/70)
+                value.Score_total = value.Score_total/(value.Score_total/70)
 
                 location.Aps = append(location.Aps, value)
+                location.Aps_score += value.Score
         }
 
         return location, nil
@@ -97,13 +99,37 @@ func ParseLocationsDir(dir string) (Locations, error) {
                 return nil, err
         }
 
+        total_sum := 0.0
         for _, f := range contents {
                 if f.IsDir() {
                         loc, err := ParseLocation(dir + "/" + f.Name() + "/data", f.Name())
                         if err == nil {
+                                total_sum += loc.Aps_score
                                 locations = append(locations, loc)
                         }
                 }
         }
+
+        for _, loc := range locations {
+                loc.Aps_score = loc.Aps_score/total_sum
+        }
+
         return locations, nil
+}
+
+func BuildFrequecyScores(locations Locations) (map[string]APscore) {
+        scores := make(map[string]APscore)
+        for _, location := range locations {
+                for _, ap := range location.Aps {
+                        score := APscore{
+                                Essid: ap.Essid,
+                                Address: ap.Address,
+                                Score: scores[ap.Essid].Score + ap.Score,
+                                Score_total: scores[ap.Essid].Score_total + ap.Score_total,
+                        }
+                        scores[ap.Address] = score
+                }
+        }
+
+        return scores
 }

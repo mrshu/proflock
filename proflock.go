@@ -121,13 +121,49 @@ func main() {
                 },
         }
 
+        var cmdLocate = &cobra.Command{
+                Use:   "locate",
+                Short: "Locate using prerecorded locations.",
+                Long:  `Locate using prerecorded locations.`,
+                Run: func(cmd *cobra.Command, args []string) {
+                        profiles, err := proflocker.ParseLocationsDir(profiles_dir)
+                        if err != nil {
+                                panic(err);
+                        }
+
+                        frequencies := proflocker.BuildFrequecyScores(profiles)
+
+                        var probabs = make(map[string]float64)
+                        for _, profile := range profiles {
+                                score := profile.Aps_score
+
+                                for _, ap := range profile.Aps {
+                                        prob := frequencies[ap.Address].Score
+                                        if prob == 0.0 {
+                                                prob = 0.000001
+                                        }
+
+                                        score = score * prob
+
+                                }
+
+                                probabs[profile.Name] = score
+                        }
+
+                        fmt.Println(probabs)
+
+                },
+        }
+
+
         var rootCmd = &cobra.Command{Use: "proflock"}
         rootCmd.PersistentFlags().StringVarP(&wifi_device, "device", "", "wlp4s0",
                                                 "Use this wifi-enabled device.")
 
         profile.ProfilesDir = profiles_dir
 
-        rootCmd.AddCommand(cmdScan, profile.CmdProfile, cmdTurnWifi, cmdProfiles, cmdRecord, cmdShow)
+        rootCmd.AddCommand(cmdScan, profile.CmdProfile, cmdTurnWifi, cmdProfiles, cmdRecord, cmdShow,
+                                cmdLocate)
         rootCmd.Execute()
 }
 
