@@ -88,6 +88,22 @@ func ParseLocation(path string, name string) (Location, error) {
         return location, nil
 }
 
+func LocationsInDir(dir string) ([]string, error) {
+        contents, err := ioutil.ReadDir(dir)
+        if err != nil {
+                return nil, err
+        }
+
+        var locations []string
+
+        for _, f := range contents {
+                if f.IsDir() {
+                        locations = append(locations, f.Name())
+                }
+        }
+        return locations, nil
+}
+
 func ParseLocationsDir(dir string) (Locations, error) {
         locations := Locations{}
         return locations, nil
