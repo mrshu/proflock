@@ -16,9 +16,9 @@ type APscore struct {
 }
 
 type Location struct {
-        name string
-        path string
-        aps []APscore
+        Name string
+        Path string
+        Aps []APscore
 }
 
 type Locations []Location
@@ -52,7 +52,7 @@ func RecordLocation(location string, profile_dir string, device string) (error) 
 }
 
 func ParseLocation(path string, name string) (Location, error) {
-        location := Location{path: path, name: name}
+        location := Location{Path: path, Name: name}
 
         data, err := ioutil.ReadFile(path)
         if err != nil {
@@ -82,29 +82,28 @@ func ParseLocation(path string, name string) (Location, error) {
                 value.score = value.score/(value.score_total/70)
                 value.score_total = value.score_total/(value.score_total/70)
 
-                location.aps = append(location.aps, value)
+                location.Aps = append(location.Aps, value)
         }
 
         return location, nil
 }
 
-func LocationsInDir(dir string) ([]string, error) {
+
+func ParseLocationsDir(dir string) (Locations, error) {
+        locations := Locations{}
+
         contents, err := ioutil.ReadDir(dir)
         if err != nil {
                 return nil, err
         }
 
-        var locations []string
-
         for _, f := range contents {
                 if f.IsDir() {
-                        locations = append(locations, f.Name())
+                        loc, err := ParseLocation(dir + "/" + f.Name() + "/data", f.Name())
+                        if err == nil {
+                                locations = append(locations, loc)
+                        }
                 }
         }
-        return locations, nil
-}
-
-func ParseLocationsDir(dir string) (Locations, error) {
-        locations := Locations{}
         return locations, nil
 }

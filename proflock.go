@@ -65,17 +65,17 @@ func main() {
                 Short: "Show profiles",
                 Long:  `Show profiles.`,
                 Run: func(cmd *cobra.Command, args []string) {
-                        profiles, err := proflocker.LocationsInDir(profiles_dir)
+                        profiles, err := proflocker.ParseLocationsDir(profiles_dir)
                         if err != nil {
                                 panic(err);
                         }
 
                         if len(profiles) == 0 {
-                                fmt.Println("fatal: no profiled found")
+                                fmt.Println("fatal: no profile found")
                         } else {
                                 fmt.Printf("The following profiles were found in %s:\n", profiles_dir)
                                 for _, profile := range profiles {
-                                        fmt.Println(profile)
+                                        fmt.Println(profile.Name)
                                 }
                         }
 
