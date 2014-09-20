@@ -143,7 +143,7 @@ func main() {
                                 }
 
                                 for _, ap := range aps {
-                                        prob := proflocker.ApproximateScore(ap, frequencies)
+                                        prob := proflocker.ApproximateScore(ap, frequencies)/10
 
                                         // fmt.Printf("%s\t%f\n", ap.Essid, prob)
 
@@ -154,7 +154,7 @@ func main() {
                                         score = score * prob
                                 }
 
-                                probabs[profile.Name] = score/profile.Aps_score
+                                probabs[profile.Name] = score
                         }
 
                         max_profile := "no_profile"
