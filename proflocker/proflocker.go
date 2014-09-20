@@ -6,6 +6,7 @@ import (
         "encoding/json"
         "io/ioutil"
         "strings"
+        "math"
 )
 
 type APscore struct {
@@ -130,4 +131,14 @@ func BuildFrequecyScores(location Location) (map[string]APscore) {
         }
 
         return scores
+}
+
+func ApproximateScore(ap iwscanner.AP, frequencies map[string]APscore) (float64) {
+        prob := frequencies[ap.Address].Score
+        if prob == 0.0 {
+                return 0.0
+        }
+
+        prob = 70-math.Abs(prob-float64(ap.Quality))
+        return prob
 }

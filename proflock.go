@@ -143,7 +143,10 @@ func main() {
                                 }
 
                                 for _, ap := range aps {
-                                        prob := frequencies[ap.Address].Score
+                                        prob := proflocker.ApproximateScore(ap, frequencies)
+
+                                        // fmt.Printf("%s\t%f\n", ap.Essid, prob)
+
                                         if prob == 0.0 {
                                                 prob = 0.1
                                         }
