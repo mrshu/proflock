@@ -131,26 +131,44 @@ func main() {
                                 panic(err);
                         }
 
-                        frequencies := proflocker.BuildFrequecyScores(profiles)
 
                         var probabs = make(map[string]float64)
                         for _, profile := range profiles {
                                 score := profile.Aps_score
+                                frequencies := proflocker.BuildFrequecyScores(profile)
 
-                                for _, ap := range profile.Aps {
+                                aps, err := iwscanner.GetAPsAsHash(wifi_device)
+                                if err != nil {
+                                        panic(err)
+                                }
+
+                                for _, ap := range aps {
                                         prob := frequencies[ap.Address].Score
                                         if prob == 0.0 {
-                                                prob = 0.000001
+                                                prob = 0.1
                                         }
 
                                         score = score * prob
-
                                 }
 
-                                probabs[profile.Name] = score
+                                probabs[profile.Name] = score/profile.Aps_score
                         }
 
-                        fmt.Println(probabs)
+                        max_profile := "no_profile"
+                        max_probab := 0.0
+                        for profile, probab := range probabs {
+                                fmt.Printf("%s\t\t%f\n", profile, probab)
+                                if probab > max_probab {
+                                        max_profile = profile
+                                        max_probab = probab
+                                }
+                        }
+
+                        if max_probab > 1.0 {
+                                fmt.Printf("Seems like you are located at '%s'.\n", max_profile)
+                        } else {
+                                fmt.Println("It is not possible to say where you are located.")
+                        }
 
                 },
         }

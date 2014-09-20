@@ -94,7 +94,7 @@ type AP struct {
 
 type APs []AP
 
-func GetAPs (device string) (aps APs , err error) {
+func GetAPs(device string) (aps APs, err error) {
         var out bytes.Buffer
         cmd := exec.Command("iwlist", device, "scan")
         cmd.Stdout = &out
@@ -108,6 +108,20 @@ func GetAPs (device string) (aps APs , err error) {
                 err = nil
                 return
         }
+}
+
+func GetAPsAsHash(device string) (map[string]AP, error) {
+        aps, err := GetAPs(device)
+        if err != nil {
+                return nil, err
+        }
+
+        out := make(map[string]AP)
+        for _, ap := range aps {
+                out[ap.Address] = ap
+        }
+
+        return out, nil
 }
 
 func parseIwlistOutput(in string) (aps APs) {

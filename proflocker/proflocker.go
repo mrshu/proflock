@@ -117,18 +117,16 @@ func ParseLocationsDir(dir string) (Locations, error) {
         return locations, nil
 }
 
-func BuildFrequecyScores(locations Locations) (map[string]APscore) {
+func BuildFrequecyScores(location Location) (map[string]APscore) {
         scores := make(map[string]APscore)
-        for _, location := range locations {
-                for _, ap := range location.Aps {
-                        score := APscore{
-                                Essid: ap.Essid,
-                                Address: ap.Address,
-                                Score: scores[ap.Essid].Score + ap.Score,
-                                Score_total: scores[ap.Essid].Score_total + ap.Score_total,
-                        }
-                        scores[ap.Address] = score
+        for _, ap := range location.Aps {
+                score := APscore{
+                        Essid: ap.Essid,
+                        Address: ap.Address,
+                        Score: scores[ap.Essid].Score + ap.Score,
+                        Score_total: scores[ap.Essid].Score_total + ap.Score_total,
                 }
+                scores[ap.Address] = score
         }
 
         return scores
