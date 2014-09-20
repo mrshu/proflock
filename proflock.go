@@ -14,6 +14,12 @@ var wifi_device string
 var profiles_dir string
 var flag_profiles_dir string
 
+func OverrideProfileDir() {
+        if flag_profiles_dir != "" {
+                profiles_dir = flag_profiles_dir
+        }
+}
+
 func main() {
 
         conf, err := globalconf.New("proflock")
@@ -66,6 +72,7 @@ func main() {
                 Short: "Show profiles",
                 Long:  `Show profiles.`,
                 Run: func(cmd *cobra.Command, args []string) {
+                        OverrideProfileDir()
                         profiles, err := proflocker.ParseLocationsDir(profiles_dir)
                         if err != nil {
                                 panic(err);
@@ -94,6 +101,7 @@ func main() {
                                 return
                         }
 
+                        OverrideProfileDir()
                         err := proflocker.RecordLocation(args[0], profiles_dir, wifi_device)
                         if err != nil {
                                 panic(err)
@@ -113,6 +121,7 @@ func main() {
 
                         name := args[0]
 
+                        OverrideProfileDir()
                         location, err := proflocker.ParseLocation(profiles_dir + "/" + name + "/data", name)
                         if err != nil {
                                 panic(err)
@@ -127,6 +136,7 @@ func main() {
                 Short: "Locate using prerecorded locations.",
                 Long:  `Locate using prerecorded locations.`,
                 Run: func(cmd *cobra.Command, args []string) {
+                        OverrideProfileDir()
                         profiles, err := proflocker.ParseLocationsDir(profiles_dir)
                         if err != nil {
                                 panic(err);
@@ -134,11 +144,12 @@ func main() {
 
 
                         var probabs = make(map[string]float64)
+                        aps, err := iwscanner.GetAPsAsHash(wifi_device)
+
                         for _, profile := range profiles {
                                 score := profile.Aps_score
                                 frequencies := proflocker.BuildFrequecyScores(profile)
 
-                                aps, err := iwscanner.GetAPsAsHash(wifi_device)
                                 if err != nil {
                                         panic(err)
                                 }
@@ -184,9 +195,6 @@ func main() {
         rootCmd.PersistentFlags().StringVarP(&flag_profiles_dir, "profiledir", "P", "",
                                                 "the directory with profiles in it")
 
-        if flag_profiles_dir != "" {
-               profiles_dir = flag_profiles_dir
-        }
 
         rootCmd.AddCommand(cmdScan, profile.CmdProfile, cmdTurnWifi, cmdProfiles, cmdRecord, cmdShow,
                                 cmdLocate)
