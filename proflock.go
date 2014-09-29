@@ -67,6 +67,21 @@ func main() {
                 },
         }
 
+         var cmdIsWifi= &cobra.Command{
+                Use:   "is-wifi [on|off]",
+                Short: "Is Wifi On or Off",
+                Long:  `Is Wifi On or Off?`,
+                Run: func(cmd *cobra.Command, args []string) {
+                        on, e := iwscanner.IsWifiOn(wifi_device)
+                        if e != nil {
+                                panic(e);
+                        }
+
+                        fmt.Println(on)
+
+                },
+        }
+
         var cmdProfiles = &cobra.Command{
                 Use:   "profiles",
                 Short: "Show profiles",
@@ -197,7 +212,7 @@ func main() {
 
 
         rootCmd.AddCommand(cmdScan, profile.CmdProfile, cmdTurnWifi, cmdProfiles, cmdRecord, cmdShow,
-                                cmdLocate)
+                                cmdLocate, cmdIsWifi)
         rootCmd.Execute()
 }
 
