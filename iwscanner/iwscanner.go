@@ -37,7 +37,9 @@ func IsWifiOnIp(device string) (ret bool, err error) {
                 return
         }
 
-        contains_up := strings.Contains(out.String(), "UP")
+        // we'd like to match the UP in <.....,UP......>
+        // that is why we want to match ,UP
+        contains_up := strings.Contains(out.String(), ",UP")
 
         if (contains_up) {
                 ret = true
