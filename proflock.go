@@ -196,10 +196,14 @@ func main() {
 
                         if max_probab > 1.0 {
                                 fmt.Printf("Seems like you are located at '%s'.\n", max_profile)
+                                err := proflocker.RunHook("located", max_profile, profiles_dir)
+                                if err != nil {
+                                        panic(err);
+                                }
+
                         } else {
                                 fmt.Println("It is not possible to say where you are located.")
                         }
-
                 },
         }
 

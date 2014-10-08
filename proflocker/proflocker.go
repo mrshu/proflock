@@ -6,6 +6,7 @@ import (
         "encoding/json"
         "io/ioutil"
         "strings"
+        "os/exec"
         "math"
 )
 
@@ -141,4 +142,9 @@ func ApproximateScore(ap iwscanner.AP, frequencies map[string]APscore) (float64)
 
         prob = 70-math.Abs(prob-float64(ap.Quality))
         return prob
+}
+
+func RunHook(hook string, profile string, profiles_dir string) (error) {
+        _, err := exec.Command(profiles_dir + "/" + profile + "/hooks.d/" + hook + ".sh").Output()
+        return err
 }
