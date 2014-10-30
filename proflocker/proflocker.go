@@ -145,6 +145,12 @@ func ApproximateScore(ap iwscanner.AP, frequencies map[string]APscore) (float64)
 }
 
 func RunHook(hook string, profile string, profiles_dir string) (error) {
-        _, err := exec.Command(profiles_dir + "/" + profile + "/hooks.d/" + hook + ".sh").Output()
+        path := profiles_dir + "/" + profile + "/hooks.d/" + hook + ".sh"
+        if _, err := os.Stat(path); err != nil {
+                if !os.IsNotExist(err) {
+                        return err
+                }
+        }
+        _, err := exec.Command(path).Output()
         return err
 }
