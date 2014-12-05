@@ -124,6 +124,28 @@ func main() {
                 },
         }
 
+        var cmdDumpProfile = &cobra.Command{
+                Use:   "dump-profile [location]",
+                Short: "Dump the data we have for a location",
+                Long:  "Dump the data we have for a location",
+                Run: func(cmd *cobra.Command, args []string) {
+                        if len(args) < 1 {
+                                fmt.Println("Location name is required.")
+                                return
+                        }
+
+                        name := args[0]
+
+                        OverrideProfileDir()
+                        location, err := proflocker.ParseLocation(profiles_dir + "/" + name + "/data", name)
+                        if err != nil {
+                                panic(err)
+                        }
+
+                        //TODO: dump the location data in a serious way.
+                },
+        }
+
         var cmdShow = &cobra.Command{
                 Use:   "show [location]",
                 Short: "Shows location's data.",
