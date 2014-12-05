@@ -142,6 +142,8 @@ func main() {
                                 panic(err)
                         }
 
+                        fmt.Println(location.Aps)
+
                         //TODO: dump the location data in a serious way.
                 },
         }
@@ -238,7 +240,7 @@ func main() {
 
 
         rootCmd.AddCommand(cmdScan, profile.CmdProfile, cmdTurnWifi, cmdProfiles, cmdRecord, cmdShow,
-                                cmdLocate, cmdIsWifi)
+                                cmdLocate, cmdIsWifi, cmdDumpProfile)
         rootCmd.Execute()
 }
 
