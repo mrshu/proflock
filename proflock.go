@@ -214,7 +214,7 @@ func main() {
                         max_profile := "no_profile"
                         max_probab := 0.0
                         for profile, probab := range probabs {
-                                if log_probab {
+                                if log_probs {
                                         fmt.Printf("%s\t\t%f\n", profile, probab)
                                 }
                                 if probab > max_probab {
@@ -236,7 +236,7 @@ func main() {
                 },
         }
 
-        cmdLocate.Flags().BoolVarP(&log_probs, "log-probabilities", "v", true,
+        cmdLocate.Flags().BoolVarP(&log_probs, "log-probabilities", "v", false,
                                                 "log probabilities for profiles while locating")
 
 
