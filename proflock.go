@@ -13,6 +13,7 @@ import(
 var wifi_device string
 var profiles_dir string
 var flag_profiles_dir string
+var log_probs bool
 
 func OverrideProfileDir() {
         if flag_profiles_dir != "" {
@@ -28,6 +29,8 @@ func main() {
         }
 
         profiles_dir = path.Dir(conf.Filename) + "/profiles"
+
+        log_probs = false
 
         var cmdScan = &cobra.Command{
                 Use:   "scan",
@@ -211,7 +214,9 @@ func main() {
                         max_profile := "no_profile"
                         max_probab := 0.0
                         for profile, probab := range probabs {
-                                fmt.Printf("%s\t\t%f\n", profile, probab)
+                                if log_probab {
+                                        fmt.Printf("%s\t\t%f\n", profile, probab)
+                                }
                                 if probab > max_probab {
                                         max_profile = profile
                                         max_probab = probab
@@ -230,6 +235,9 @@ func main() {
                         }
                 },
         }
+
+        cmdLocate.Flags().BoolVarP(&log_probs, "log-probabilities", "v", true,
+                                                "log probabilities for profiles while locating")
 
 
         var rootCmd = &cobra.Command{Use: "proflock"}
