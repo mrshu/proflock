@@ -197,12 +197,12 @@ func main() {
                                 }
 
                                 for _, ap := range aps {
-                                        prob := proflocker.ApproximateScore(ap, frequencies)/10
+                                        prob := proflocker.ApproximateScore(ap, frequencies)/100
 
                                         // fmt.Printf("%s\t%f\n", ap.Essid, prob)
 
                                         if prob == 0.0 {
-                                                prob = 0.1
+                                                prob = 0.01
                                         }
 
                                         score = score * prob
